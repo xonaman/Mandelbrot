@@ -1,26 +1,10 @@
 final Camera camera = new Camera();
+final Controls controls = new Controls();
 final boolean julia = true;
-final color[] colors = new color[] {
-  color(9, 1, 47), 
-  color(4, 4, 73), 
-  color(0, 7, 100), 
-  color(12, 44, 138), 
-  color(24, 82, 177), 
-  color(57, 125, 209), 
-  color(134, 181, 229), 
-  color(211, 236, 248), 
-  color(241, 233, 191), 
-  color(248, 201, 95), 
-  color(255, 170, 0), 
-  color(204, 128, 0), 
-  color(153, 87, 0), 
-  color(106, 52, 3), 
-};
 
 Complex start = new Complex(-0.77, 0.105);
 boolean useColors = true;
 int maxIterations = 1000;
-
 PVector lastMousePosition;
 PImage mandelbrot;
 boolean repaint;
@@ -30,8 +14,8 @@ void setup() {
   pixelDensity(1);
   frameRate(30);
   surface.setTitle("Mandelbrot");
-
-  initControls();
+  
+  controls.init(this);
 
   mandelbrot = createImage(width, height, RGB);
   repaint = true;
@@ -50,10 +34,10 @@ void draw() {
   for (int i = 0; i < 2; i++) {
     if (i == 0) {
       stroke(0);
-      strokeWeight(2);
+      strokeWeight(3);
     } else {
       stroke(255);
-      strokeWeight(1);
+      strokeWeight(1.5);
     }
     line(px - 5, py - 5, px + 5, py + 5);
     line(px - 5, py + 5, px + 5, py - 5);
@@ -90,7 +74,7 @@ void drawMandelbrot() {
         if (r2 + i2 > 4) {
           break;
         }
-        num.i = square(num.r + num.i) - r2 - i2 + point.i;
+        num.i = (num.r + num.i) * (num.r + num.i) - r2 - i2 + point.i;
         num.r = r2 - i2 + point.r;
         r2 = num.r * num.r;
         i2 = num.i * num.i;
@@ -137,8 +121,8 @@ void drawCoordinateSystem() {
   }
 }
 
-void mouseMoved(MouseEvent event) {
-  if (cp5.isMouseOver()) {
+void mouseMoved() {
+  if (controls.isMouseOver()) {
     cursor(HAND);
   } else {
     cursor(CROSS);
@@ -146,7 +130,7 @@ void mouseMoved(MouseEvent event) {
 }
 
 void mouseDragged() {
-  if (cp5.isMouseOver()) {
+  if (controls.isMouseOver()) {
     return;
   }
   if (mouseButton == RIGHT) {
@@ -160,7 +144,7 @@ void mouseDragged() {
 }
 
 void mousePressed() {
-  if (cp5.isMouseOver()) {
+  if (controls.isMouseOver()) {
     return;
   }
   if (mouseButton == RIGHT) {
