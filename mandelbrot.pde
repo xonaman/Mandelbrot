@@ -1,37 +1,37 @@
 final Camera camera = new Camera();
-final int maxIterations = 100;
-final boolean useColors = true;
-final boolean julia = false;
+final boolean julia = true;
+final color[] colors = new color[] {
+  color(9, 1, 47), 
+  color(4, 4, 73), 
+  color(0, 7, 100), 
+  color(12, 44, 138), 
+  color(24, 82, 177), 
+  color(57, 125, 209), 
+  color(134, 181, 229), 
+  color(211, 236, 248), 
+  color(241, 233, 191), 
+  color(248, 201, 95), 
+  color(255, 170, 0), 
+  color(204, 128, 0), 
+  color(153, 87, 0), 
+  color(106, 52, 3), 
+};
 
-Complex start = new Complex(0, 0);
-color[] colors;
+Complex start = new Complex(-0.77, 0.105);
+boolean useColors = true;
+int maxIterations = 1000;
+
 PVector lastMousePosition;
 PImage mandelbrot;
 boolean repaint;
 
 void setup() {
   size(800, 600);
-  cursor(CROSS);
   pixelDensity(1);
   frameRate(30);
   surface.setTitle("Mandelbrot");
 
-  colors = new color[] {
-    color(9, 1, 47),
-    color(4, 4, 73),
-    color(0, 7, 100),
-    color(12, 44, 138),
-    color(24, 82, 177),
-    color(57, 125, 209),
-    color(134, 181, 229),
-    color(211, 236, 248),
-    color(241, 233, 191),
-    color(248, 201, 95),
-    color(255, 170, 0),
-    color(204, 128, 0),
-    color(153, 87, 0),
-    color(106, 52, 3),
-  };
+  initControls();
 
   mandelbrot = createImage(width, height, RGB);
   repaint = true;
@@ -71,6 +71,7 @@ void draw() {
   surface.setTitle("Mandelbrot (" + floor(frameRate) + "fps)");
 }
 
+// https://randomascii.wordpress.com/2011/08/13/faster-fractals-through-algebra/
 void drawMandelbrot() {
   int startTime = millis();
   mandelbrot.loadPixels();
@@ -136,7 +137,18 @@ void drawCoordinateSystem() {
   }
 }
 
+void mouseMoved(MouseEvent event) {
+  if (cp5.isMouseOver()) {
+    cursor(HAND);
+  } else {
+    cursor(CROSS);
+  }
+}
+
 void mouseDragged() {
+  if (cp5.isMouseOver()) {
+    return;
+  }
   if (mouseButton == RIGHT) {
     start = camera.toComplex(mouseX, mouseY);
     repaint = true;
@@ -148,6 +160,9 @@ void mouseDragged() {
 }
 
 void mousePressed() {
+  if (cp5.isMouseOver()) {
+    return;
+  }
   if (mouseButton == RIGHT) {
     start = camera.toComplex(mouseX, mouseY);
     repaint = true;

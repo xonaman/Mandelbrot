@@ -1,5 +1,5 @@
 class Camera {
-  float x = -150;
+  float x = 0;//-150;
   float y = 0;
   float zoom = 250;
   
