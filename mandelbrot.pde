@@ -1,10 +1,10 @@
 final Camera camera = new Camera();
 final Controls controls = new Controls();
-final boolean julia = true;
+final boolean julia = false;
 
-Complex start = new Complex(-0.77, 0.105);
+Complex start = new Complex(0, 0);
 boolean useColors = true;
-int maxIterations = 1000;
+int maxIterations = 100;
 PVector lastMousePosition;
 PImage mandelbrot;
 boolean repaint;
